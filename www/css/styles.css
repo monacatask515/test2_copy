@@ -1,0 +1,32 @@
+/* set padding for iOS7 status bar */
+.ua-ios-7 .ui-page, .ua-ios-8, .ui-page {
+    padding-top: 63px !important;
+}
+
+.ua-ios-7 .ui-header, .ua-ios-8 .ui-header {
+    top: 20px;
+}
+
+
+input[type=text1]{
+
+height:30px;
+font-size = "20px"
+
+}
+
+textarea[id="todo-body"]{
+
+height:100px;
+}
+
+#id="S-button"{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#id="SaP-button"{
+    margin-right: auto;
+    margin-left: auto;
+}
+

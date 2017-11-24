@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" >
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="js/jquery-3.2.1.min.js"></script>
+　<script src="js/testdb.js"></script>
+　<script src="js/app.js"></script>
+  <!-- 
+  <script type="text/javascript" charset="utf-8" src="components/loader.js"></script>  <script src="js/cssua.min.js"></script>
+   -->
+  <script src="js/app.js"></script>
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+//■写真保存時の動作
+
+　  var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready",onDeviceReady,false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoDataSuccess(imageData) {
+      // Uncomment to view the base64-encoded image data
+      // console.log(imageData);
+
+      // Get image handle
+      //
+      var smallImage = document.getElementById('smallImage');
+
+      // Unhide image elements
+      //
+      smallImage.style.display = 'block';
+
+      // Show the captured photo
+      // The inline CSS rules are used to resize the image
+      //
+      smallImage.src = "data:image/jpeg;base64," + imageData;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoURISuccess(imageURI) {
+      // Uncomment to view the image file URI
+      // console.log(imageURI);
+
+      // Get image handle
+      //
+      var largeImage = document.getElementById('largeImage');
+
+      // Unhide image elements
+      //
+      largeImage.style.display = 'block';
+
+      // Show the captured photo
+      // The inline CSS rules are used to resize the image
+      //
+      largeImage.src = imageURI;
+    }
+
+    // A button will call this function
+    //
+    function capturePhoto() {
+      // Take picture using device camera and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
+        destinationType: destinationType.DATA_URL ,saveToPhotoAlbum: true,correctOrientation: true});
+    }
+
+
+    // Called if something bad happens.
+    //
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    }
+
+  </script>
+  
+<!--■写真保存時の動作　記述ここまで-->
+　
+ <script>
+    ons.ready(function() {
+      console.log("Onsen UI is ready!");
+    });
+
+    window.fn = {};
+    window.fn.open = function() {
+      var menu = document.getElementById('menu');
+      menu.open();
+    };
+    window.fn.load = function(page) {
+      var content = document.getElementById('content');
+      var menu = document.getElementById('menu');
+      content
+        .load(page)
+        .then(menu.close.bind(menu));
+    };
+    
+    window.onload = function(){
+    　Select_table()
+    }
+    
+//確認ダイアログの表示設定    
+        function confirmFunction1(){
+    // 「OK」時の処理開始 ＋ 確認ダイアログの表示
+    if(window.confirm('戻ってよろしいですか？')){
+    //    window.alert('OKされました'); // 警告ダイアログを表示
+		location.href = "index.html"
+	}
+	// 「OK」時の処理終了
+	// 「キャンセル」時の処理開始
+	else{
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+	}
+	// 「キャンセル」時の処理終了
+};
+
+
+</script>
+
+</head>
+
+<body>
+
+
+  <ons-splitter>
+    <ons-splitter-side id="menu" side="left" width="200px" collapse swipeable>
+      <ons-page>
+        <ons-list>
+          <ons-list-item onclick="fn.load('todohome.html')" tappable>
+            一覧
+          </ons-list-item>
+          <ons-list-item onclick="fn.load('completed tasks.html')" tappable>
+            完了タスク
+          </ons-list-item>
+<!--          <ons-list-item onclick="fn.load('setting.html')" tappable>
+            設定
+          </ons-list-item>--> 
+        </ons-list>
+       
+      </ons-page>
+    </ons-splitter-side>
+    <ons-splitter-content id="content" page="todohome.html"></ons-splitter-content>
+  </ons-splitter>
+
+
+<!--一覧画面-->
+<ons-template id="todohome.html">
+<ons-navigator title="SearchNavigator" id="SearchNavigator">
+<ons-navigator title="Navigator" id="myNavigator">
+<ons-page>
+  <div data-role="page"></div>
+  
+  
+
+     <ons-toolbar>
+         <div class="left">
+           <ons-toolbar-button onclick="fn.open()">
+             <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+           </ons-toolbar-button>
+         </div>
+          <div class="center">TODO APP
+          </div>
+
+        <!--ボタン配置 1,icon 2,追加  -->
+          <div class="right">
+           <ons-icon icon="ion-search" size="30px"
+             <ons-button  onclick="SearchNavigator.pushPage('search-page.html', { animation : 'slide' } )"></ons-button>
+           </ons-icon>
+          </div>
+       
+       <div style="text-aligen:center" class="right">
+         <ons-button onclick="myNavigator.pushPage('add-page.html', { animation : 'slide' } )">追加</ons-button>
+       </div>
+     </ons-toolbar>
+     
+<!--resultの記述-->
+        <div data-role="content" class="ui-content" role="main" >
+            <ul data-role="listview" data-inset="true" id="result" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" >
+        </div>
+     
+<!-- メニューを下から表示させるボタン -->
+          <div id="clickme" >
+           <ons-icon icon="cog" size="30px"
+             <ons-button  onclick="app.showFromObject()"></ons-button>
+             
+
+     
+</ons-page>
+ </ons-navigator>
+</ons-navigator>
+</ons-template>
+
+
+
+
+<!-- 完了タスク -->
+<ons-template id="completed tasks.html">
+ <ons-navigator title="SearchNavigator2" id="SearchNavigator2">
+  <ons-page>
+  <div data-role="page"></div>
+   <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        完了タスク
+      </div>
+       <div class="right">
+        <ons-icon icon="ion-search" size="30px"
+         <ons-button  onclick="SearchNavigator2.pushPage('search-page.html', { animation : 'slide' } )">  </ons-button>
+        </ons-icon>
+      </div>
+   
+    </ons-toolbar>
+    
+  </div>
+  
+  </ons-page>
+ </ons-navigator>
+</ons-template>
+
+  
+<ons-template id="setting.html">
+<ons-page>
+  <div data-role="page"></div>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        設定
+      </div>
+    </ons-toolbar>
+      
+</ons-page>
+</ons-template>
+
+
+<!-- 追加画面 -->
+<ons-template id="add-page.html">
+ <ons-page>
+ <div data-role="page"></div>
+ 
+<ons-toolbar>
+         <div class="left">
+           <ons-toolbar-button onclick="fn.open()">
+             <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+           </ons-toolbar-button>
+<!--戻る押下時の確認ダイアログの出す機能-->
+            <ons-button modifier="material"  onclick="confirmFunction1()" >戻る</ons-button>
+            <!--<ons-button modifier="material"　id = "todoplus" onclick="myNavigator.popPage()">戻る</ons-button>-->  
+         </div>
+           <div class="center">ADD TODO
+        </div>
+</ons-toolbar>
+
+         <div class="center">
+             <div style="text-aligen:center" class="left"></div>
+                <div data-role="content"></div><br>                    
+                        <!--■編集前<p><label>題名<ons-input id="todo-title" type="text1" style="width:100%;" placeholder="TODO Title"></label></p></div>-->
+                        <div style="margin-left:10%;margin-right:10%;"><p><label>題名<ons-input id="tasktitle" type="text1" modifier="underbar" style="width:100%;" placeholder="TODO Title"></label></p></div>
+                        <!--■編集前<p><textarea id="todo-body"  style="width:100%;height: 8em;"  placeholder="Description"></textarea></p></div>-->
+                        <div style="margin-left:10%;margin-right:10%;"><p><label>本文<ons-input id="description" type="text1" modifier="underbar" style="width:100%;" placeholder="Description"></label></p></div>
+                        <!--■編集前<p><label>　　　期限日時　  　:　  <input id="time" type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day"></label></p>-->
+                        <p><label>　　期限　<ons-input type="datetime-local" id="date" modifier="underbar"  style="width:50%;" placeholder="date" float></ons-input></label></p>
+                        <!--■編集前<p><label>　　　　時間 　　　 　:　　 <input type="time" style="width:110px; name="time"></label></p> -->
+                        <p><label>　　通知　<ons-input type="datetime-local" id="remind" modifier="underbar"  style="width:50%;" placeholder="date" float></ons-input></label></p>
+                        <!--■編集前<p><label>　 リマインド日時　:　 <input id="remindtime" type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day2"></label></p>-->
+                        <div style="margin-left:10%;margin-right:10%;"><p><label>タグ<ons-input id="tag" type="text1" modifier="underbar" style="width:100%;" placeholder="Tag set"></label></p></div>
+                        <!--■編集前<p><label>　　タグ　:　<input id="tag" type="text" style="width:200px; name="tag""abel></label></p>-->
+                        <p><label>　　重要度　</label>
+                        <select id="select_test">
+                        <option value="高">高</option>
+                        <option value="中">中</option>
+                        <option value="低">低</option>
+                        </select><p>
+                        </select></p>
+            <!--■編集前<div style="margin-left:10%;margin-right:10%;">
+            <input id="S-button" class="center" type="button" style="width:100%;padding:5px;" value="保存" onclick="addTodo()"></div>-->
+            
+            <img style="display:none;width:300px;height:300px;" id="smallImage" src="" />
+    　　      <img style="display:none;" id="largeImage" src="" />
+    　　    
+            <div style="text-align: center; ">
+            <ons-button onclick="save_return()" style="width:100%;padding:5px;">タスク保存</ons-button></div>
+            <div style="text-align: center; ">
+            <ons-button onclick="dropData()" style="width:100%;padding:5px;">削除</ons-button></div>
+            <div style="margin-left:10%;margin-right:10%;">
+            <input id="PaS-button" class="center" type="button" style="width:100%;padding:5px;" value="写真の保存" onclick="addTodoPicture()"  data-theme="b"></div>
+        </div>
+        
+ 
+
+
+        
+<script src="components/loader.js"></script>
+<script src="js/memo.js"></script>
+<script src="js/app.js"></script>
+<script src="js/cssua.min.js"></script>
+    
+ </ons-page>
+</ons-template>
+
+
+<!-- 編集画面 -->
+
+<ons-template id="editer-page.html">
+ <ons-page>
+ <div data-role="page"></div>
+<ons-toolbar>
+         <div class="left">
+           <ons-toolbar-button onclick="fn.open()">
+             <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+           </ons-toolbar-button>
+             <ons-button modifier="material" onclick="myNavigator.popPage()">戻る</ons-button>
+         </div>
+           <div class="center">TODO LIST
+        </div>
+
+    
+    
+</ons-toolbar>
+
+         <div class="center">
+             <div style="text-aligen:center" class="left"></div>
+
+             <div data-role="content"></div><br>
+             <div style="margin-left:10%;margin-right:10%;">
+            <p><input id="todo-title" type="text1" style="width:100%;" placeholder="TODO Title"></p></div>
+            <div style="margin-left:10%;margin-right:10%;">
+            <p><textarea id="todo-body"  style="width:100%;height: 8em;"  placeholder="Description"></textarea></p></div>
+            <p><label>　　　期限日時　  　:　  <input type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day"></label></p>
+<!--            <p><label>　　　　時間 　　　 　:　　 <input type="time" style="width:110px; name="time"></label></p> -->
+            <p><label>　 リマインド日時　:　 <input type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day2"></label></p>
+<!--            <p><label>　　　通知時間 　　　 :　 　<input type="time" style="width:110px; name="time"></label></p> -->
+            <p><label>　　タグ　:　<input type="text" style="width:200px; name="tag""abel></label></p>
+            <p><label>　重要度　:　　<select name="label">
+            <option value="1">高</option>
+            <option value="2">中</option>
+            <option value="3">低</option>
+            </select></label><br><br><br></p>
+
+    
+</div>
+        
+ </ons-page>
+</ons-template>
+
+
+
+<!-- 検索画面 -->
+<ons-template id="search-page.html">
+ <ons-page>
+ <div data-role="page"></div>
+<ons-toolbar>
+         <div class="left">
+           <ons-toolbar-button onclick="fn.open()">
+             <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+           </ons-toolbar-button>
+         </div>
+           <div class="center">SEARCH
+        </div>
+</ons-toolbar>
+
+         <div class="center">
+             <div style="text-aligen:center" class="left"></div>
+
+             <div data-role="content"></div><br>
+              <div style="margin-left:8%;margin-right:5%;">
+            <p><label>件名:　<input id="todo-title" type="text1" style="width:80%;" placeholder="TODO Title"></p></div>
+            <p><label>　　期限日時　:　  <input type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day"></label></p>
+            <p><label>　　タグ　:　<input type="text" style="width:200px; name="tag""abel></label></p>
+            <p><label>　重要度　:　　<select name="label">
+            <option value="1">高</option>
+            <option value="2">中</option>
+            <option value="3">低</option>
+            </select></label><br></p>
+
+
+
+  <ons-list>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="check-1"></ons-checkbox>
+      </label>
+      <label for="check-1" class="center">
+        Apple
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="check-2"></ons-checkbox>
+      </label>
+      <label for="check-2" class="center">
+        Banana
+      </label>
+    </ons-list-item>
+  </ons-list>
+
+<ons-list-item tappable>
+      <label class="left">
+        <ons-radio name="color" input-id="radio-2"></ons-radio>
+      </label>
+      <label for="radio-2" class="center">
+        Blue
+      </label>
+    </ons-list-item>
+    
+      <label class="left">　　写真添付有無：　
+       <input type="checkbox" name="example" value="1">あり</input>
+       <br><br>
+      </label>
+      
+             <p><label>　写真添付有無　:　　<select name="label">
+            <option value="1">指定なし</option>
+            <option value="2">添付あり</option>
+            <option value="2">添付なし</option>
+            </select></label><br><br><br></p>
+      
+<!-- 
+            <p><label> 写真有無  
+                <ons-list-item tappable>
+                 <label class="left">
+                  <ons-radio name="color" input-id="radio-1" checked></ons-radio>
+                  <label for="radio-1" class="center">
+                   あり
+                  </label>
+                 </label>  
+                </ons-list-item>
+               </label>
+              </p>
+ -->
+            <div style="margin-left:10%;margin-right:10%;">
+            <input id="Search-button" class="center" type="button" style="width:100%;padding:5px;" value="検索" onclick="XXXXXX()"></div>
+<!-- 検索を押下時の機能名等はまだ未検討 -->
+    　　　     </div>
+        
+        
+
+
+<!-- 検索結果画面 -->
+<ons-template id="result-page.html">
+<ons-navigator title="Navigator" id="myNavigator">
+ <ons-page>
+  <div data-role="page"></div>
+   <ons-toolbar>
+         <div class="left">
+           <ons-toolbar-button onclick="fn.open()">
+             <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+           </ons-toolbar-button>
+             <ons-button modifier="material" onclick="myNavigator.popPage()">戻る</ons-button>
+         </div>
+           <div class="center">TODO LIST
+        </div>
+   </ons-toolbar>
+
+</ons-page>
+</ons-navigator>
+</ons-template>
+
+
+
+ <div class="center">
+ </div>
+
+ </ons-page>
+</ons-template>
+
+
+</body>
+</html>
