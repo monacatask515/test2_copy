@@ -137,50 +137,40 @@
           function(trans, r){
             
                 // 結果のクリア
-                var d = document.getElementById('result');
+                var d = document.getElementById('TopListView');
                 while (d.firstChild) {
                     d.removeChild(d.firstChild);
                 }
             
-                var table = document.createElement('table');
-                
-                
                 // 取得データを表示
-                for (var i = 0; i < r.rows.length; i++) {
-            
-                    var tr = document.createElement('li');
-                    var tasktitle = document.createElement('h3');
-                    var description = document.createElement('p');
-                    var date = document.createElement('p');
-                    var remind = document.createElement('p');
-                    var tag = document.createElement('p');
-                    var priority = document.createElement('p');
+                for (var i = 0; i < r.rows.length; i++){
                     
-            
-                    tasktitle.innerText = r.rows.item(i).tasktitle;
-                    description.innerText = r.rows.item(i).description;
-                    date.innerText = r.rows.item(i).date;
-                    remind.innerText = r.rows.item(i).remind;
-                    tag.innerText = r.rows.item(i).tag;
-                    priority.innerText = r.rows.item(i).priority;
-
-                    tr.appendChild(tasktitle);
-                    tr.appendChild(description);
-                    tr.appendChild(date);
-                    tr.appendChild(remind);
-                    tr.appendChild(tag);
-                    tr.appendChild(priority);
-                                
-                    table.appendChild(tr);
-                    
+                    var tasktitle = r.rows.item(i).tasktitle;
+                    var description = r.rows.item(i).description;
+                    var date = r.rows.item(i).date;
+                    var remind = r.rows.item(i).remind;
+                    var tag = r.rows.item(i).tag;
+                    var priority = r.rows.item(i).priority;
+                
+                    $li = $("<li class='ui-li ui-li-static ui-btn-up-c ui-first-child ui-last-child'><a href='#' class='show'><h3 class='ui-li-heading'></h3></a><p class='ui-li-desc'></p><p1 class='ui-li-desc'></p1><p3 class='ui-li-desc'></p3><p4 class='ui-li-desc'></p4></li>");
+                    $li.find("h3").text(tasktitle);
+                    $li.find("p").text(description);
+                    $li.find("p1").text(date);
+                    $li.find("p2").text(remind);
+                    $li.find("p3").text(tag);
+                    $li.find("p4").text(priority);
+                    $("#TopListView").prepend($li);
+                 }
+                if (r.length == 0) {
+                    $li = $("<li>メモがありません</li>");
+                    $("#TopListView").prepend($li);
                 }
-                d.appendChild(table);
-                myNavigator.popPage()
             }
-        );
-      }
+         );
+        }
     );
-  }
+                $("#TopListView").listview('refresh');  // Call refresh after manipulating list
+    }
 
 // ■11/18現在未編集↓
       

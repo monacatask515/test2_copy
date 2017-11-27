@@ -119,6 +119,7 @@
     　Select_table()
     }
     
+    
 //確認ダイアログの表示設定    
         function confirmFunction1(){
     // 「OK」時の処理開始 ＋ 確認ダイアログの表示
@@ -169,8 +170,6 @@
 <ons-navigator title="Navigator" id="myNavigator">
 <ons-page>
   <div data-role="page"></div>
-  
-  
 
      <ons-toolbar>
          <div class="left">
@@ -193,10 +192,11 @@
        </div>
      </ons-toolbar>
      
-<!--resultの記述-->
-        <div data-role="content" class="ui-content" role="main" >
-            <ul data-role="listview" data-inset="true" id="result" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" >
-        </div>
+<!--toplistview領域-->
+        <section data-role="content">
+            <ul id="TopListView" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-split-icon="delete">
+            </ul>
+        </section>
      
 <!-- メニューを下から表示させるボタン -->
           <div id="clickme" >
@@ -294,10 +294,10 @@
                         <!--■編集前<p><label>　　タグ　:　<input id="tag" type="text" style="width:200px; name="tag""abel></label></p>-->
                         <p><label>　　重要度　</label>
                         <select id="select_test">
-                        <option value="高">高</option>
-                        <option value="中">中</option>
-                        <option value="低">低</option>
-                        </select><p>
+                            <option value="高">高</option>
+                            <option value="中">中</option>
+                            <option value="低">低</option>
+                            </select><p>
                         </select></p>
             <!--■編集前<div style="margin-left:10%;margin-right:10%;">
             <input id="S-button" class="center" type="button" style="width:100%;padding:5px;" value="保存" onclick="addTodo()"></div>-->
@@ -389,7 +389,8 @@
          <div class="center">
              <div style="text-aligen:center" class="left"></div>
 
-             <div data-role="content"></div><br>
+<!--■test2より変更-->
+             <!--<div data-role="content"></div><br>
               <div style="margin-left:8%;margin-right:5%;">
             <p><label>件名:　<input id="todo-title" type="text1" style="width:80%;" placeholder="TODO Title"></p></div>
             <p><label>　　期限日時　:　  <input type="datetime-local" cmanCLDat="USE:ON" style="width:150px;" name="day"></label></p>
@@ -398,11 +399,24 @@
             <option value="1">高</option>
             <option value="2">中</option>
             <option value="3">低</option>
-            </select></label><br></p>
+            </select></label><br></p>-->
+            
+                        
+            <div style="margin-left:10%;margin-right:10%;"><p><label>題名<ons-input id="tasktitle" type="text1" modifier="underbar" style="width:100%;" placeholder="TODO Title"></label></p></div>
+            <div style="margin-left:10%;margin-right:10%;"><p><label>本文<ons-input id="description" type="text1" modifier="underbar" style="width:100%;" placeholder="Description"></label></p></div>
+            <p><label>　　期限　<ons-input type="datetime-local" id="date" modifier="underbar"  style="width:50%;" placeholder="date" float></ons-input></label></p>
+            <p><label>　　通知　<ons-input type="datetime-local" id="remind" modifier="underbar"  style="width:50%;" placeholder="date" float></ons-input></label></p>
+            <div style="margin-left:10%;margin-right:10%;"><p><label>タグ<ons-input id="tag" type="text1" modifier="underbar" style="width:100%;" placeholder="Tag set"></label></p></div>
+            <p><label>　　重要度　</label>
+            <select id="select_test">
+                <option value="高">高</option>
+                <option value="中">中</option>
+                <option value="低">低</option>
+            </select><p>
+            </select></p>
 
-
-
-  <ons-list>
+<!--■test2より変更-->
+  <!--<ons-list>
     <ons-list-item tappable>
       <label class="left">
         <ons-checkbox input-id="check-1"></ons-checkbox>
@@ -419,16 +433,15 @@
         Banana
       </label>
     </ons-list-item>
-  </ons-list>
-
-<ons-list-item tappable>
+  </ons-list>-->
+<!--<ons-list-item tappable>
       <label class="left">
         <ons-radio name="color" input-id="radio-2"></ons-radio>
       </label>
       <label for="radio-2" class="center">
         Blue
       </label>
-    </ons-list-item>
+    </ons-list-item>-->
     
       <label class="left">　　写真添付有無：　
        <input type="checkbox" name="example" value="1">あり</input>
